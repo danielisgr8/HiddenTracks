@@ -1,0 +1,14 @@
+{
+  "version": "1.0",
+  "imports": ["src"],
+  "plugins": {
+    "typescript-codegen": {
+        "service": "dev.danielschubert.hiddentracks#HiddenTracks",
+        "package": "@danielisgr8/hidden-tracks-client",
+        "packageVersion": "0.0.1",
+        "packageJson": {
+            "license": "MIT"
+        }
+    }
+  }
+}
