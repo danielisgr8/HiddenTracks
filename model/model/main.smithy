@@ -1,6 +1,11 @@
 $version: "2"
 namespace dev.danielschubert.hiddentracks
 
+use aws.api#service
+use aws.protocols#restJson1
+
+@restJson1
+@service(sdkId: "HiddenTracks")
 service HiddenTracks {
   version: "2006-03-01"
   resources: [Conversation, Message],
@@ -21,6 +26,7 @@ resource Message {
   list: ListMessages
 }
 
+@http(code: 200, method: "POST", uri: "/create-conversation")
 operation CreateConversation {
   input := for Conversation {
     @required
@@ -37,9 +43,11 @@ operation CreateConversation {
 }
 
 @readonly
+@http(code: 200, method: "GET", uri: "/list-conversations/{user}")
 operation ListConversations {
   input := for Conversation {
     @required
+    @httpLabel
     $user
   }
 
@@ -49,6 +57,7 @@ operation ListConversations {
   }
 }
 
+@http(code: 200, method: "POST", uri: "/send-message")
 operation SendMessage {
   input := for Message {
     @required
@@ -71,12 +80,15 @@ operation SendMessage {
 }
 
 @readonly
+@http(code: 200, method: "GET", uri: "/list-messages/{conversationId}")
 operation ListMessages {
   input := for Message {
     @required
+    @httpQuery("user")
     user: User
 
     @required
+    @httpLabel
     $conversationId
   }
 
@@ -87,12 +99,15 @@ operation ListMessages {
 }
 
 @readonly
+@http(code: 200, method: "GET", uri: "/list-songs-for-encoding")
 operation ListSongsForEncoding {
   input := {
     @required
+    @httpQuery("user")
     user: User
 
     @required
+    @httpQuery("message")
     message: NonEmptyString
   }
 

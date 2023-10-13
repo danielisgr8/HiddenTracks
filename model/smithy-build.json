@@ -1,6 +1,6 @@
 {
   "version": "1.0",
-  "imports": ["src"],
+  "imports": ["model"],
   "plugins": {
     "typescript-codegen": {
         "service": "dev.danielschubert.hiddentracks#HiddenTracks",
