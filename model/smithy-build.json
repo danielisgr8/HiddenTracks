@@ -3,12 +3,13 @@
   "imports": ["model"],
   "plugins": {
     "typescript-codegen": {
-        "service": "dev.danielschubert.hiddentracks#HiddenTracks",
-        "package": "@danielisgr8/hidden-tracks-client",
-        "packageVersion": "0.0.1",
-        "packageJson": {
-            "license": "MIT"
-        }
+      "service": "dev.danielschubert.hiddentracks#HiddenTracks",
+      "package": "@danielisgr8/hidden-tracks-client",
+      "packageVersion": "0.0.1",
+      "packageManager": "npm",
+      "packageJson": {
+        "license": "MIT"
+      }
     }
   }
 }
