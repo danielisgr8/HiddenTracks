@@ -23,3 +23,35 @@ buildscript {
 }
 
 tasks["jar"].enabled = false
+
+val javaScriptClientDirectory = "build/smithyprojections/model/source/typescript-codegen"
+tasks.register<Exec>("npmInstall") {
+    dependsOn("smithyBuildJar")
+    inputs.files(fileTree(javaScriptClientDirectory) {
+        include("package.json")
+        include("package-lock.json")
+    })
+    outputs.files(fileTree(javaScriptClientDirectory) {
+        include("package-lock.json")
+        include("node_modules/**")
+    })
+
+    workingDir(javaScriptClientDirectory)
+    commandLine("npm", "install")
+}
+tasks.register<Exec>("npmBuild") {
+    dependsOn("npmInstall")
+    inputs.files(fileTree(javaScriptClientDirectory) {
+        exclude("dist-*/**")
+    })
+    outputs.files(fileTree(javaScriptClientDirectory) {
+        include("dist-*/**")
+    })
+
+    workingDir(javaScriptClientDirectory)
+    commandLine("npm", "run", "build")
+}
+
+tasks.build {
+    dependsOn("npmBuild")
+}
