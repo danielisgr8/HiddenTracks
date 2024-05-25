@@ -1,0 +1,28 @@
+{
+  "name": "@danielisgr8/hidden-tracks-website",
+  "version": "0.1.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "build": "concurrently npm:lint:ts npm:lint:eslint npm:build:esbuild",
+    "build:esbuild": "esbuild src/main.ts --bundle --outfile=dist/bundle.js",
+    "lint:ts": "tsc --noEmit",
+    "lint:eslint": "eslint",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Daniel Schubert <me@danielschubert.dev> (https://danielschubert.dev)",
+  "license": "MIT",
+  "devDependencies": {
+    "@eslint/js": "^9.1.1",
+    "concurrently": "^8.2.2",
+    "esbuild": "^0.20.2",
+    "eslint": "^8.57.0",
+    "eslint-plugin-react": "^7.34.1",
+    "globals": "^15.0.0",
+    "typescript": "^5.4.5",
+    "typescript-eslint": "^7.7.1"
+  },
+  "dependencies": {
+    "@danielisgr8/hidden-tracks-client": "file:../model/build/smithyprojections/model/source/typescript-codegen"
+  }
+}
