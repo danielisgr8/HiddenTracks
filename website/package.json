@@ -2,20 +2,24 @@
   "name": "@danielisgr8/hidden-tracks-website",
   "version": "0.1.0",
   "description": "",
-  "main": "index.js",
+  "main": "dist/bundle.js",
   "scripts": {
-    "build": "concurrently npm:lint:ts npm:lint:eslint npm:build:esbuild",
-    "build:esbuild": "esbuild src/main.ts --bundle --outfile=dist/bundle.js",
+    "build": "concurrently npm:lint:ts npm:lint:eslint npm:build:esbuild npm:build:copy",
+    "build:esbuild": "esbuild src/main.tsx --bundle --outfile=dist/bundle.js",
+    "build:copy": "mkdir -p dist && cp public/* dist",
     "lint:ts": "tsc --noEmit",
     "lint:eslint": "eslint",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "server": "npm run build:copy && esbuild src/main.tsx --bundle --outfile=dist/bundle.js --serve --servedir=dist"
   },
   "author": "Daniel Schubert <me@danielschubert.dev> (https://danielschubert.dev)",
   "license": "MIT",
   "devDependencies": {
     "@eslint/js": "^9.1.1",
+    "@types/react": "^18.3.5",
+    "@types/react-dom": "^18.3.0",
     "concurrently": "^8.2.2",
-    "esbuild": "^0.20.2",
+    "esbuild": "^0.23.1",
     "eslint": "^8.57.0",
     "eslint-plugin-react": "^7.34.1",
     "globals": "^15.0.0",
@@ -23,6 +27,8 @@
     "typescript-eslint": "^7.7.1"
   },
   "dependencies": {
-    "@danielisgr8/hidden-tracks-client": "file:../model/build/smithyprojections/model/source/typescript-codegen"
+    "@danielisgr8/hidden-tracks-client": "file:../model/build/smithyprojections/model/source/typescript-codegen",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1"
   }
 }
