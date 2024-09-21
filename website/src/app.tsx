@@ -6,6 +6,7 @@ import NewConversationPage from './pages/new-conversation-page';
 import ConversationPage from './pages/conversation-page';
 import ConversationsPage from './pages/conversations-page';
 import Root from './pages/root';
+import { UserProvider } from './data/user-context';
 
 import './app.css';
 
@@ -36,7 +37,9 @@ const router = createBrowserRouter([
 ]);
 
 const App = () => (
-  <RouterProvider router={router} />
+  <UserProvider>
+    <RouterProvider router={router} />
+  </UserProvider>
 );
 
 export default App;
