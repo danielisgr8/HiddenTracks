@@ -2,21 +2,21 @@ import React, { createContext, useContext, useReducer } from 'react';
 
 type User = null | string;
 
-interface UserActions {
+interface UserAction {
   type: 'login',
   username: User,
 }
 
-const userReducer: React.Reducer<User, UserActions> = (_prevUser, action) => {
+const userReducer: React.Reducer<User, UserAction> = (_prevUser, action) => {
   return action.username;
 }
 
 const UserContext = createContext<User>(null);
 
-const UserDispatchContext = createContext<null | React.Dispatch<UserActions>>(null);
+const UserDispatchContext = createContext<null | React.Dispatch<UserAction>>(null);
 
 function UserProvider({ children }: { children: React.ReactNode }) {
-  const [user, dispatch] = useReducer<React.Reducer<User, UserActions>>(userReducer, null);
+  const [user, dispatch] = useReducer<React.Reducer<User, UserAction>>(userReducer, null);
 
   return (
     <UserContext.Provider value={user}>

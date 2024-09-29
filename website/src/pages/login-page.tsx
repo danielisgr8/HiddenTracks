@@ -20,7 +20,8 @@ const LoginPage = () => {
     if (user !== null) navigate('/');
   }, [user]);
 
-  const handleSubmit = () => {
+  const handleSubmit = (event: React.FormEvent) => {
+    event.preventDefault();
     if (userInput.trim().length === 0 || userDispatch === null) return;
     userDispatch({ type: 'login', username: userInput.trim() });
   };
@@ -29,12 +30,14 @@ const LoginPage = () => {
     <Container>
       <h2>Login page</h2>
 
-      <div>
-        <label htmlFor="username">Username: </label>
-        <input id="username" value={userInput} onChange={(event) => setUserInput(event.target.value)}/>
-      </div>
+      <form onSubmit={handleSubmit}>
+        <div>
+          <label htmlFor="username">Username: </label>
+          <input id="username" value={userInput} onChange={(event) => setUserInput(event.target.value)}/>
+        </div>
 
-      <button onClick={handleSubmit}>Submit</button>
+        <input type="submit" value="Submit"/>
+      </form>
     </Container>
   );
 };
