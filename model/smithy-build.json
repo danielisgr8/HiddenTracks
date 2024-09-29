@@ -5,11 +5,12 @@
     "typescript-codegen": {
       "service": "dev.danielschubert.hiddentracks#HiddenTracks",
       "package": "@danielisgr8/hidden-tracks-client",
-      "packageVersion": "0.0.1",
+      "packageVersion": "0.0.2",
       "packageManager": "npm",
       "packageJson": {
         "license": "MIT"
-      }
+      },
+      "requiredMemberMode": "strict"
     }
   }
 }
