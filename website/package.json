@@ -5,12 +5,16 @@
   "main": "dist/bundle.js",
   "scripts": {
     "build": "concurrently npm:lint:ts npm:lint:eslint npm:build:esbuild npm:build:copy",
-    "build:esbuild": "esbuild src/main.tsx --bundle --outfile=dist/bundle.js",
+    "build:esbuild": "esbuild src/main.tsx --bundle --minify --outfile=dist/bundle.js",
     "build:copy": "mkdir -p dist && cp public/* dist",
     "lint:ts": "tsc --noEmit",
-    "lint:eslint": "eslint",
+    "lint:eslint": "eslint --no-warn-ignored src/**",
     "test": "echo \"Error: no test specified\" && exit 1",
     "server": "npm run build:copy && esbuild src/main.tsx --bundle --sourcemap --outfile=dist/bundle.js --serve --servedir=dist --serve-fallback=dist/index.html"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/danielisgr8/HiddenTracks.git"
   },
   "author": "Daniel Schubert <me@danielschubert.dev> (https://danielschubert.dev)",
   "license": "MIT",
