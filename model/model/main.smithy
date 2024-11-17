@@ -3,6 +3,7 @@ namespace dev.danielschubert.hiddentracks
 
 use aws.api#service
 use aws.protocols#restJson1
+use smithy.framework#ValidationException
 
 @restJson1
 @service(sdkId: "HiddenTracks")
@@ -40,6 +41,8 @@ operation CreateConversation {
   }
 
   output: ConversationSummary
+
+  errors: [ValidationException]
 }
 
 @readonly
@@ -55,6 +58,8 @@ operation ListConversations {
     @required
     items: ConversationSummaryList
   }
+
+  errors: [ValidationException]
 }
 
 @http(code: 200, method: "POST", uri: "/send-message")
@@ -77,6 +82,8 @@ operation SendMessage {
   }
 
   output: MessageSummary
+
+  errors: [ValidationException]
 }
 
 @readonly
@@ -96,6 +103,8 @@ operation ListMessages {
     @required
     items: MessageSummaryList
   }
+
+  errors: [ValidationException]
 }
 
 @readonly
@@ -114,6 +123,8 @@ operation ListSongsForEncoding {
   output := {
     songs: SongUriList
   }
+
+  errors: [ValidationException]
 }
 
 @length(min: 1)
