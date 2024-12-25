@@ -7,7 +7,8 @@
     "build:esbuild": "esbuild src/index.ts --bundle --minify --platform=node --target=node20 --outfile=dist/bundle.js",
     "lint:ts": "tsc --noEmit",
     "lint:eslint": "eslint src/**",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "ts-node src/dev.ts"
   },
   "repository": {
     "type": "git",
@@ -21,14 +22,17 @@
   "homepage": "https://github.com/danielisgr8/HiddenTracks#readme",
   "description": "",
   "dependencies": {
+    "@aws-smithy/server-apigateway": "^1.0.0-alpha.10",
     "@danielisgr8/hidden-tracks-service-ssdk": "file:../model/build/smithyprojections/model/source/typescript-ssdk-codegen"
   },
   "devDependencies": {
     "@eslint/js": "^9.15.0",
+    "@types/aws-lambda": "^8.10.146",
     "concurrently": "^9.1.0",
     "esbuild": "^0.24.0",
     "eslint": "^9.14.0",
     "globals": "^15.12.0",
+    "ts-node": "^10.9.2",
     "typescript": "^5.6.3",
     "typescript-eslint": "^8.14.0"
   }
