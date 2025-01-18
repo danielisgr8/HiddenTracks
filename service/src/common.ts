@@ -1,4 +1,3 @@
-import { convertEvent, convertResponse } from "@aws-smithy/server-apigateway";
 import {
   CreateConversation,
   CreateConversationServerInput,
@@ -17,7 +16,6 @@ import {
   SendMessageServerInput,
   SendMessageServerOutput,
 } from "@danielisgr8/hidden-tracks-service-ssdk";
-import { APIGatewayProxyEventV2, APIGatewayProxyResultV2 } from "aws-lambda";
 
 type RequestContext = object;
 
@@ -72,16 +70,4 @@ const hiddenTracksService: HiddenTracksService<RequestContext> = {
   ListSongsForEncoding: listSongsForEncodingHandler,
 };
 
-const serviceHandler = getHiddenTracksServiceHandler(hiddenTracksService);
-
-export const lambdaHandler = async (event: APIGatewayProxyEventV2): Promise<APIGatewayProxyResultV2> => {
-  console.log('Input: ', event);
-
-  const convertedEvent = convertEvent(event);
-  const rawResponse = await serviceHandler.handle(convertedEvent, {});
-  const convertedResponse = convertResponse(rawResponse);
-
-  console.log('Output: ', convertedResponse);
-
-  return convertedResponse;
-};
+export const serviceHandler = getHiddenTracksServiceHandler(hiddenTracksService);

@@ -4,7 +4,7 @@
  */
 
 import { APIGatewayProxyEventV2 } from 'aws-lambda';
-import { lambdaHandler } from '.';
+import { lambdaHandler } from './lambda';
 
 const method = 'GET';
 const path = '/list-conversations/daniel';

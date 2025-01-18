@@ -4,7 +4,7 @@
   "main": "index.js",
   "scripts": {
     "build": "concurrently npm:lint:ts npm:lint:eslint npm:build:esbuild",
-    "build:esbuild": "esbuild src/index.ts --bundle --minify --platform=node --target=node20 --outfile=dist/bundle.js",
+    "build:esbuild": "esbuild src/lambda.ts --bundle --minify --platform=node --target=node20 --outfile=dist/lambda.js",
     "lint:ts": "tsc --noEmit",
     "lint:eslint": "eslint src/**",
     "test": "echo \"Error: no test specified\" && exit 1",
