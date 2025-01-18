@@ -121,6 +121,7 @@ operation ListSongsForEncoding {
   }
 
   output := {
+    @required
     songs: SongUriList
   }
 
