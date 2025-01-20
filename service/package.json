@@ -3,8 +3,9 @@
   "version": "0.1.0",
   "main": "index.js",
   "scripts": {
-    "build": "concurrently npm:lint:ts npm:lint:eslint npm:build:esbuild",
-    "build:esbuild": "esbuild src/lambda.ts --bundle --minify --platform=node --target=node20 --outfile=dist/lambda.js",
+    "build": "concurrently npm:lint:ts npm:lint:eslint npm:build:lambda npm:build:node",
+    "build:lambda": "esbuild src/lambda.ts --bundle --minify --platform=node --target=node20 --outfile=dist/lambda.js",
+    "build:node": "esbuild src/node.ts --bundle --platform=node --target=node20 --outfile=dist/node.js",
     "lint:ts": "tsc --noEmit",
     "lint:eslint": "eslint src/**",
     "test": "echo \"Error: no test specified\" && exit 1",
@@ -23,9 +24,11 @@
   "description": "",
   "dependencies": {
     "@aws-smithy/server-apigateway": "^1.0.0-alpha.10",
+    "@aws-smithy/server-node": "^1.0.0-alpha.10",
     "@danielisgr8/hidden-tracks-service-ssdk": "file:../model/build/smithyprojections/model/source/typescript-ssdk-codegen"
   },
   "devDependencies": {
+    "@aws-sdk/protocol-http": "^3.370.0",
     "@eslint/js": "^9.15.0",
     "@types/aws-lambda": "^8.10.146",
     "concurrently": "^9.1.0",
