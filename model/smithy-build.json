@@ -18,10 +18,7 @@
       "packageVersion": "0.0.1",
       "packageManager": "npm",
       "packageJson": {
-        "license": "MIT",
-        "overrides": {
-          "re2-wasm": "npm:re2-wasm-embedded"
-        }
+        "license": "MIT"
       },
       "requiredMemberMode": "strict"
     }

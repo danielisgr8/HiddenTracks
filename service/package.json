@@ -3,9 +3,10 @@
   "version": "0.1.0",
   "main": "index.js",
   "scripts": {
-    "build": "concurrently npm:lint:ts npm:lint:eslint npm:build:lambda npm:build:node",
+    "build": "concurrently npm:lint:ts npm:lint:eslint npm:build:lambda npm:build:node npm:build:copy-wasm",
     "build:lambda": "esbuild src/lambda.ts --bundle --minify --platform=node --target=node20 --outfile=dist/lambda.js",
     "build:node": "esbuild src/node.ts --bundle --platform=node --target=node20 --outfile=dist/node.js",
+    "build:copy-wasm": "cp ../model/build/smithyprojections/model/source/typescript-ssdk-codegen/node_modules/re2-wasm/build/wasm/re2.wasm dist",
     "lint:ts": "tsc --noEmit",
     "lint:eslint": "eslint src/**",
     "test": "echo \"Error: no test specified\" && exit 1",
