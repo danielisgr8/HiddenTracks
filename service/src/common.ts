@@ -1,73 +1,121 @@
 import {
-  CreateConversation,
   CreateConversationServerInput,
   CreateConversationServerOutput,
   getHiddenTracksServiceHandler,
   HiddenTracksService,
-  ListConversations,
   ListConversationsServerInput,
   ListConversationsServerOutput,
-  ListMessages,
   ListMessagesServerInput,
   ListMessagesServerOutput,
-  ListSongsForEncoding,
+  ListSongsForEncodingServerInput,
   ListSongsForEncodingServerOutput,
-  SendMessage,
   SendMessageServerInput,
   SendMessageServerOutput,
 } from "@danielisgr8/hidden-tracks-service-ssdk";
 
 type RequestContext = object;
 
-const listConversationsHandler: ListConversations<RequestContext> = async (input: ListConversationsServerInput): Promise<ListConversationsServerOutput> => {
-  console.log(`Listing conversations for ${input.user}`);
-  return {
-    items: [{ conversationId: '123', recipients: ['daniel', 'greg'], encodingFormat: '1' }],
-  };
+abstract class Handler<Input, Output> {
+  protected operation: string;
+
+  constructor(operation: string) {
+    this.operation = operation;
+  }
+
+  protected abstract performAction(input: Input, context: RequestContext): Promise<Output>;
+
+  public getHandler(): (input: Input, context: RequestContext) => Promise<Output> {
+    return async (input, context) => {
+      console.log('Operation: ', this.operation);
+      console.log('Input: ', JSON.stringify(input, null, 2));
+
+      const output = await this.performAction(input, context);
+
+      console.log('Output: ', JSON.stringify(output, null, 2));
+
+      return output;
+    }
+  }
+}
+
+class ListConversationsHandler extends Handler<ListConversationsServerInput, ListConversationsServerOutput> {
+  constructor() {
+    super('ListConversations');
+  }
+
+  protected async performAction(): Promise<ListConversationsServerOutput> {
+    return {
+      items: [{ conversationId: '123', recipients: ['daniel', 'greg'], encodingFormat: '1' }],
+    };
+  }
+}
+
+class CreateConversationHandler extends Handler<CreateConversationServerInput, CreateConversationServerOutput> {
+  constructor() {
+    super('CreateConversation');
+  }
+
+  protected async performAction(input: CreateConversationServerInput): Promise<CreateConversationServerOutput> {
+    return { conversationId: '234', recipients: input.recipients, encodingFormat: input.encodingFormat };
+  }
 };
 
-const createConversationHandler: CreateConversation<RequestContext> = async (input: CreateConversationServerInput): Promise<CreateConversationServerOutput> => {
-  return { conversationId: '234', recipients: input.recipients, encodingFormat: input.encodingFormat };
-};
+class SendMessageHandler extends Handler<SendMessageServerInput, SendMessageServerOutput> {
+  constructor() {
+    super('SendMessage');
+  }
 
-const sendMessageHandler: SendMessage<RequestContext> = async (input: SendMessageServerInput): Promise<SendMessageServerOutput> => {
-  return {
-    messageId: '345',
-    conversationId: input.conversationId,
-    user: input.user,
-    createTime: new Date(),
-    playlistId: input.playlistId,
-    startOffset: input.startOffset,
-    endOffset: input.endOffset,
-  };
-};
-
-const listMessagesHandler: ListMessages<RequestContext> = async (input: ListMessagesServerInput): Promise<ListMessagesServerOutput> => {
-  return {
-    items: [{
-      messageId: '456',
+  protected async performAction(input: SendMessageServerInput): Promise<SendMessageServerOutput> {
+    return {
+      messageId: '345',
       conversationId: input.conversationId,
       user: input.user,
       createTime: new Date(),
-      playlistId: '123ABCabc',
-      startOffset: 0,
-      endOffset: 5,
-    }],
-  };
+      playlistId: input.playlistId,
+      startOffset: input.startOffset,
+      endOffset: input.endOffset,
+    };
+  }
 };
 
-const listSongsForEncodingHandler: ListSongsForEncoding<RequestContext> = async (): Promise<ListSongsForEncodingServerOutput> => {
-  return {
-    songs: ['spotify:track:123ABCabc'],
-  };
+class ListMessagesHandler extends Handler<ListMessagesServerInput, ListMessagesServerOutput> {
+  constructor() {
+    super('ListMessages');
+  }
+
+  protected async performAction(input: ListMessagesServerInput): Promise<ListMessagesServerOutput> {    
+    return {
+      items: [{
+        messageId: '456',
+        conversationId: input.conversationId,
+        user: input.user,
+        createTime: new Date(),
+        playlistId: '123ABCabc',
+        startOffset: 0,
+        endOffset: 5,
+      }],
+    };
+  }
+};
+
+class ListSongsForEncodingHandler extends Handler<ListSongsForEncodingServerInput, ListSongsForEncodingServerOutput> {
+  constructor() {
+    super('ListSongsForEncoding');
+  }
+
+  protected async performAction(): Promise<ListSongsForEncodingServerOutput> {
+    return {
+      songs: ['spotify:track:123ABCabc'],
+    };
+  }
 };
 
 const hiddenTracksService: HiddenTracksService<RequestContext> = {
-  ListConversations: listConversationsHandler,
-  CreateConversation: createConversationHandler,
-  SendMessage: sendMessageHandler,
-  ListMessages: listMessagesHandler,
-  ListSongsForEncoding: listSongsForEncodingHandler,
+  ListConversations: new ListConversationsHandler().getHandler(),
+  CreateConversation: new CreateConversationHandler().getHandler(),
+  SendMessage: new SendMessageHandler().getHandler(),
+  ListMessages: new ListMessagesHandler().getHandler(),
+  ListSongsForEncoding: new ListSongsForEncodingHandler().getHandler(),
 };
 
 export const serviceHandler = getHiddenTracksServiceHandler(hiddenTracksService);
