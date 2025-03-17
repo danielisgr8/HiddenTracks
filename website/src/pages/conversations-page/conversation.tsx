@@ -1,4 +1,3 @@
-import React from 'react';
 import { ConversationSummary } from '@danielisgr8/hidden-tracks-client';
 import { useUser } from '../../data/user-context';
 import styled from 'styled-components';
