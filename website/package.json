@@ -4,12 +4,12 @@
   "description": "",
   "main": "dist/bundle.js",
   "scripts": {
-    "build": "concurrently npm:lint:ts npm:lint:eslint npm:build:esbuild npm:build:copy",
+    "build": "concurrently --group npm:lint:ts npm:lint:eslint npm:test npm:build:esbuild npm:build:copy",
     "build:esbuild": "esbuild src/main.tsx --bundle --minify --outfile=dist/bundle.js",
     "build:copy": "mkdir -p dist && cp public/* dist",
     "lint:ts": "tsc --noEmit",
     "lint:eslint": "eslint --no-warn-ignored src/**",
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "jest",
     "server": "npm run build:copy && esbuild src/main.tsx --bundle --sourcemap --outfile=dist/bundle.js --serve --servedir=dist --serve-fallback=dist/index.html"
   },
   "repository": {
@@ -20,6 +20,7 @@
   "license": "MIT",
   "devDependencies": {
     "@eslint/js": "^9.1.1",
+    "@types/jest": "^29.5.14",
     "@types/react": "^18.3.5",
     "@types/react-dom": "^18.3.0",
     "concurrently": "^8.2.2",
@@ -27,6 +28,8 @@
     "eslint": "^8.57.0",
     "eslint-plugin-react": "^7.34.1",
     "globals": "^15.0.0",
+    "jest": "^29.7.0",
+    "ts-jest": "^29.3.1",
     "typescript": "^5.4.5",
     "typescript-eslint": "^7.7.1"
   },
