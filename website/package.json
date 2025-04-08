@@ -29,12 +29,14 @@
     "eslint-plugin-react": "^7.34.1",
     "globals": "^15.0.0",
     "jest": "^29.7.0",
+    "jest-mock-extended": "^3.0.7",
     "ts-jest": "^29.3.1",
     "typescript": "^5.4.5",
     "typescript-eslint": "^7.7.1"
   },
   "dependencies": {
     "@danielisgr8/hidden-tracks-client": "file:../model/build/smithyprojections/model/source/typescript-codegen",
+    "@spotify/web-api-ts-sdk": "^1.2.0",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "react-router-dom": "^6.26.2",
