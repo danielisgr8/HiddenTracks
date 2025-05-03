@@ -163,6 +163,76 @@ describe('SpotifyClient', () => {
     expect(mockedSdk.search).toHaveBeenCalledTimes(4);
   });
 
-  test.todo('Handles message with odd number of characters');
-  test.todo('Throws error when Spotify API does not return valid track');
+  test('Handles message with odd number of characters', async () => {
+    /*
+      'Su' => Encoding ID 1204
+        Duration digit sum: 3-5
+        Year: 1968
+        First letter: H
+      'e\0' => Encoding ID 1815
+        Duration digit sum: 3-5
+        Year: 2000
+        First letter: M
+    */
+    const message = 'Sue';
+
+    const matchingTrack1 = { releaseYear: 1968, durationMs: 212, name: 'handyman' };
+    const matchingTrack2 = { releaseYear: 2000, durationMs: 121, name: 'Monroe Ave.' };
+    mockedSdk.search
+      .calledWith('track:H year:1968', any(), any(), 20, 0)
+      .mockResolvedValueOnce(getSdkResponse({
+        limit: 20,
+        offset: 0,
+        tracks: [matchingTrack1],
+      }));
+    mockedSdk.search
+      .calledWith('track:M year:2000', any(), any(), 20, 0)
+      .mockResolvedValueOnce(getSdkResponse({
+        limit: 20,
+        offset: 0,
+        tracks: [matchingTrack2],
+      }));
+
+    const actualTracks = await client.listSongsForEncoding(message);
+
+    expect(actualTracks).toStrictEqual([matchingTrack1, matchingTrack2].map(getSdkTrack));
+    expect(mockedSdk.search).toHaveBeenCalledTimes(2);
+  });
+
+  test('Throws error when Spotify API does not return valid track', async () => {
+    /*
+      'ok' => Encoding ID 2404
+        Duration digit sum: 6-9
+        Year: 1971
+        First letter: M
+    */
+    const message = 'ok';
+
+    const badTrack = { releaseYear: 1971, durationMs: 10000, name: 'Mixed Results' };
+    mockedSdk.search
+      .calledWith('track:M year:1971', any(), any(), 20, 0)
+      .mockResolvedValueOnce(getSdkResponse({
+        limit: 20,
+        offset: 0,
+        tracks: new Array(20).fill(badTrack),
+      }));
+    mockedSdk.search
+      .calledWith('track:M year:1971', any(), any(), 20, 20)
+      .mockResolvedValueOnce(getSdkResponse({
+        limit: 20,
+        offset: 20,
+        tracks: new Array(20).fill(badTrack),
+      }));
+    mockedSdk.search
+      .calledWith('track:M year:1971', any(), any(), 20, 40)
+      .mockResolvedValueOnce(getSdkResponse({
+        limit: 20,
+        offset: 40,
+        tracks: new Array(20).fill(badTrack),
+      }));
+
+    await expect(async () => {
+      await client.listSongsForEncoding(message);
+    }).rejects.toThrow();
+  });
 });

@@ -37,7 +37,7 @@ class SpotifyClient {
   private static getEncodingId(input: [keyof typeof characterToValue, keyof typeof characterToValue | undefined]) {
     return input[1] !== undefined
       ? characterToValue[input[0]] * 55 + characterToValue[input[1]]
-      : characterToValue[input[0]];
+      : characterToValue[input[0]] * 55;
   };
 
   private async search(songProperties: SongProperties): Promise<Track | undefined> {
